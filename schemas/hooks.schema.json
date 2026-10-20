@@ -1,0 +1,134 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://scc-universal/schemas/hooks.schema.json",
+  "title": "SCC Hooks Configuration",
+  "description": "JSON Schema for SCC hooks.json — defines Claude Code lifecycle hooks for Salesforce development",
+  "type": "object",
+  "required": ["hooks"],
+  "properties": {
+    "description": {
+      "type": "string",
+      "description": "Top-level description of this hooks configuration (plugin hooks only)"
+    },
+    "hooks": {
+      "type": "object",
+      "description": "Map of lifecycle event names to arrays of hook group definitions",
+      "properties": {
+        "SessionStart": { "$ref": "#/definitions/hookGroupArray" },
+        "UserPromptSubmit": { "$ref": "#/definitions/hookGroupArray" },
+        "PreToolUse": { "$ref": "#/definitions/hookGroupArray" },
+        "PermissionRequest": { "$ref": "#/definitions/hookGroupArray" },
+        "PermissionDenied": { "$ref": "#/definitions/hookGroupArray" },
+        "PostToolUse": { "$ref": "#/definitions/hookGroupArray" },
+        "PostToolUseFailure": { "$ref": "#/definitions/hookGroupArray" },
+        "Notification": { "$ref": "#/definitions/hookGroupArray" },
+        "SubagentStart": { "$ref": "#/definitions/hookGroupArray" },
+        "SubagentStop": { "$ref": "#/definitions/hookGroupArray" },
+        "TaskCreated": { "$ref": "#/definitions/hookGroupArray" },
+        "TaskCompleted": { "$ref": "#/definitions/hookGroupArray" },
+        "Stop": { "$ref": "#/definitions/hookGroupArray" },
+        "StopFailure": { "$ref": "#/definitions/hookGroupArray" },
+        "TeammateIdle": { "$ref": "#/definitions/hookGroupArray" },
+        "InstructionsLoaded": { "$ref": "#/definitions/hookGroupArray" },
+        "ConfigChange": { "$ref": "#/definitions/hookGroupArray" },
+        "CwdChanged": { "$ref": "#/definitions/hookGroupArray" },
+        "FileChanged": { "$ref": "#/definitions/hookGroupArray" },
+        "WorktreeCreate": { "$ref": "#/definitions/hookGroupArray" },
+        "WorktreeRemove": { "$ref": "#/definitions/hookGroupArray" },
+        "PreCompact": { "$ref": "#/definitions/hookGroupArray" },
+        "PostCompact": { "$ref": "#/definitions/hookGroupArray" },
+        "Elicitation": { "$ref": "#/definitions/hookGroupArray" },
+        "ElicitationResult": { "$ref": "#/definitions/hookGroupArray" },
+        "SessionEnd": { "$ref": "#/definitions/hookGroupArray" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "definitions": {
+    "hookGroupArray": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/hookGroup" },
+      "minItems": 1
+    },
+    "hookGroup": {
+      "type": "object",
+      "required": ["hooks"],
+      "properties": {
+        "matcher": {
+          "type": "string",
+          "description": "Regex pattern to filter when hooks fire. Use tool name for tool events, source for SessionStart, etc."
+        },
+        "hooks": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/hookDefinition" },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "hookDefinition": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["command", "http", "prompt", "agent"],
+          "description": "Hook execution type"
+        },
+        "command": {
+          "type": "string",
+          "description": "Shell command to execute (type: command)"
+        },
+        "url": {
+          "type": "string",
+          "description": "URL to POST to (type: http)"
+        },
+        "prompt": {
+          "type": "string",
+          "description": "Prompt text for LLM evaluation (type: prompt or agent)"
+        },
+        "model": {
+          "type": "string",
+          "description": "Model to use for prompt/agent hooks"
+        },
+        "if": {
+          "type": "string",
+          "description": "Permission rule syntax filter, e.g. Bash(git *) or Edit(*.cls)"
+        },
+        "timeout": {
+          "type": "integer",
+          "description": "Timeout in seconds",
+          "minimum": 1
+        },
+        "async": {
+          "type": "boolean",
+          "description": "Run in background without blocking (command hooks only)"
+        },
+        "shell": {
+          "type": "string",
+          "enum": ["bash", "powershell"],
+          "description": "Shell to use (command hooks only)"
+        },
+        "statusMessage": {
+          "type": "string",
+          "description": "Custom spinner message while hook runs"
+        },
+        "once": {
+          "type": "boolean",
+          "description": "Run only once per session (skills/agents only)"
+        },
+        "headers": {
+          "type": "object",
+          "description": "HTTP headers (type: http)",
+          "additionalProperties": { "type": "string" }
+        },
+        "allowedEnvVars": {
+          "type": "array",
+          "description": "Env vars allowed in header interpolation (type: http)",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

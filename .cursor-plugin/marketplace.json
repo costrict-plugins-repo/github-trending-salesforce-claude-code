@@ -1,0 +1,46 @@
+{
+  "name": "salesforce-claude-code",
+  "owner": {
+    "name": "Jiten Singh",
+    "email": "jitencseng@gmail.com"
+  },
+  "metadata": {
+    "description": "Production-ready AI agent harness for Salesforce development"
+  },
+  "plugins": [
+    {
+      "name": "salesforce-claude-code",
+      "source": "./",
+      "description": "17 expert subagents, 57 domain skills, and 29 automated quality gates for Salesforce development — Apex, LWC, SOQL, Flows, Visualforce, Aura, Agentforce, DevOps, and Security",
+      "version": "1.3.0",
+      "author": {
+        "name": "Jiten Singh",
+        "email": "jitencseng@gmail.com"
+      },
+      "homepage": "https://github.com/jiten-singh-shahi/salesforce-claude-code",
+      "repository": "https://github.com/jiten-singh-shahi/salesforce-claude-code",
+      "license": "MIT",
+      "keywords": [
+        "salesforce",
+        "apex",
+        "lwc",
+        "soql",
+        "agentforce",
+        "devops",
+        "testing",
+        "security"
+      ],
+      "category": "development",
+      "tags": [
+        "salesforce",
+        "apex",
+        "lwc",
+        "soql",
+        "agentforce",
+        "devops",
+        "testing",
+        "security"
+      ]
+    }
+  ]
+}

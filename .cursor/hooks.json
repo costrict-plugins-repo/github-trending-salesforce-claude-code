@@ -1,0 +1,148 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": "node scripts/hooks/session-start.js",
+        "timeout": 15
+      },
+      {
+        "command": "node scripts/hooks/check-platform-docs-age.js",
+        "timeout": 5
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": "npx block-no-verify@1.1.2",
+        "failClosed": true
+      },
+      {
+        "command": "node scripts/hooks/pre-tool-use.js",
+        "timeout": 10
+      },
+      {
+        "command": "node scripts/hooks/sfdx-validate.js",
+        "timeout": 10
+      },
+      {
+        "command": "node scripts/hooks/pre-bash-git-push-reminder.js",
+        "timeout": 5
+      },
+      {
+        "command": "node scripts/hooks/sfdx-scanner-check.js",
+        "timeout": 45
+      },
+      {
+        "command": "node scripts/hooks/pre-bash-tmux-reminder.js",
+        "timeout": 5
+      }
+    ],
+    "preToolUse": [
+      {
+        "command": "node scripts/hooks/mcp-health-check.js",
+        "failClosed": true
+      },
+      {
+        "command": "bash scripts/hooks/learning-observe.sh",
+        "timeout": 10
+      },
+      {
+        "command": "node scripts/hooks/doc-file-warning.js",
+        "timeout": 5,
+        "matcher": "Write"
+      },
+      {
+        "command": "node scripts/hooks/suggest-compact.js",
+        "timeout": 5,
+        "matcher": "Write"
+      }
+    ],
+    "postToolUse": [
+      {
+        "command": "bash scripts/hooks/learning-observe.sh",
+        "timeout": 10
+      }
+    ],
+    "afterFileEdit": [
+      {
+        "command": "node scripts/hooks/post-write.js",
+        "timeout": 10
+      },
+      {
+        "command": "node scripts/hooks/quality-gate.js",
+        "timeout": 15
+      },
+      {
+        "command": "node scripts/hooks/governor-check.js",
+        "timeout": 10
+      },
+      {
+        "command": "node scripts/hooks/post-edit-console-warn.js",
+        "timeout": 10
+      },
+      {
+        "command": "node scripts/hooks/post-edit-format.js",
+        "timeout": 15
+      },
+      {
+        "command": "node scripts/hooks/post-edit-typecheck.js",
+        "timeout": 30
+      }
+    ],
+    "afterShellExecution": [
+      {
+        "command": "node scripts/hooks/post-bash-build-complete.js",
+        "timeout": 10
+      },
+      {
+        "command": "node scripts/hooks/post-bash-pr-created.js",
+        "timeout": 10
+      }
+    ],
+    "postToolUseFailure": [
+      {
+        "command": "node scripts/hooks/mcp-health-check.js",
+        "failClosed": true
+      }
+    ],
+    "preCompact": [
+      {
+        "command": "node scripts/hooks/pre-compact.js",
+        "timeout": 10
+      }
+    ],
+    "stop": [
+      {
+        "command": "node scripts/hooks/stop-hook.js",
+        "timeout": 10,
+        "loop_limit": 3
+      },
+      {
+        "command": "node scripts/hooks/check-console-log.js",
+        "timeout": 10,
+        "loop_limit": 3
+      },
+      {
+        "command": "node scripts/hooks/session-end.js",
+        "timeout": 15,
+        "loop_limit": 3
+      },
+      {
+        "command": "node scripts/hooks/cost-tracker.js",
+        "timeout": 10,
+        "loop_limit": 3
+      },
+      {
+        "command": "node scripts/hooks/evaluate-session.js",
+        "timeout": 10,
+        "loop_limit": 3
+      }
+    ],
+    "sessionEnd": [
+      {
+        "command": "node scripts/hooks/session-end-marker.js",
+        "timeout": 10
+      }
+    ]
+  }
+}
